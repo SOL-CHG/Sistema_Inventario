@@ -1,0 +1,49 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Almacenes</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" [(ngModel)]="almacenActual.nombre" name="nombre" required>
+      <small class="ayuda">Ej. Almacén Central</small>
+    </div>
+    <div class="campo">
+      <label for="ubicacion">Ubicación</label>
+      <input id="ubicacion" type="text" [(ngModel)]="almacenActual.ubicacion" name="ubicacion">
+      <small class="ayuda">Dirección o referencia</small>
+    </div>
+    <div class="campo">
+      <label for="encargado">Encargado</label>
+      <input id="encargado" type="text" [(ngModel)]="almacenActual.encargado" name="encargado">
+      <small class="ayuda">Nombre del responsable del almacén</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th><th>Ubicación</th><th>Encargado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of almacens">
+        <td>{{ item.nombre }}</td><td>{{ item.ubicacion }}</td><td>{{ item.encargado }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

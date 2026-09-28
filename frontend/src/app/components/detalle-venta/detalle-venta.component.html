@@ -1,0 +1,65 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Detalle de Ventas</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="cantidad">Cantidad</label>
+      <input id="cantidad" type="number" [(ngModel)]="detalleVentaActual.cantidad" name="cantidad" required>
+      <small class="ayuda">Unidades del producto vendidas</small>
+    </div>
+    <div class="campo">
+      <label for="precioUnitario">Precio unitario (S/)</label>
+      <input id="precioUnitario" type="number" [(ngModel)]="detalleVentaActual.precioUnitario" name="precioUnitario" required>
+      <small class="ayuda">Precio cobrado por cada unidad</small>
+    </div>
+    <div class="campo">
+      <label for="subtotal">Subtotal (S/)</label>
+      <input id="subtotal" type="number" [(ngModel)]="detalleVentaActual.subtotal" name="subtotal" required>
+      <small class="ayuda">Cantidad × precio unitario</small>
+    </div>
+    <div class="campo">
+      <label for="venta">Venta</label>
+      <select id="venta" [(ngModel)]="detalleVentaActual.venta.id" name="venta">
+        <option [value]="0" disabled>Selecciona venta</option>
+        <option *ngFor="let opt of ventas" [value]="opt.id">#{{ opt.id }} - {{ opt.fechaVenta }}</option>
+      </select>
+      <small class="ayuda">A qué venta pertenece este detalle</small>
+    </div>
+    <div class="campo">
+      <label for="producto">Producto</label>
+      <select id="producto" [(ngModel)]="detalleVentaActual.producto.id" name="producto">
+        <option [value]="0" disabled>Selecciona producto</option>
+        <option *ngFor="let opt of productos" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">Qué producto se vendió</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Cantidad</th><th>Precio unitario (S/)</th><th>Subtotal (S/)</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of detalleVentas">
+        <td>{{ item.cantidad }}</td><td>{{ item.precioUnitario }}</td><td>{{ item.subtotal }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

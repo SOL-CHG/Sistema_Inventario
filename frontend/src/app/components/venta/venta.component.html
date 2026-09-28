@@ -1,0 +1,65 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Ventas</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="fechaVenta">Fecha de venta</label>
+      <input id="fechaVenta" type="date" [(ngModel)]="ventaActual.fechaVenta" name="fechaVenta" required>
+      <small class="ayuda">Cuándo se realizó la venta</small>
+    </div>
+    <div class="campo">
+      <label for="total">Total (S/)</label>
+      <input id="total" type="number" [(ngModel)]="ventaActual.total" name="total" required>
+      <small class="ayuda">Monto total cobrado al cliente</small>
+    </div>
+    <div class="campo">
+      <label for="estado">Estado</label>
+      <input id="estado" type="text" [(ngModel)]="ventaActual.estado" name="estado">
+      <small class="ayuda">Ej. PENDIENTE, PAGADA</small>
+    </div>
+    <div class="campo">
+      <label for="cliente">Cliente</label>
+      <select id="cliente" [(ngModel)]="ventaActual.cliente.id" name="cliente">
+        <option [value]="0" disabled>Selecciona cliente</option>
+        <option *ngFor="let opt of clientes" [value]="opt.id">{{ opt.nombres }}</option>
+      </select>
+      <small class="ayuda">A quién le vendiste</small>
+    </div>
+    <div class="campo">
+      <label for="usuario">Registrado por</label>
+      <select id="usuario" [(ngModel)]="ventaActual.usuario.id" name="usuario">
+        <option [value]="0" disabled>Selecciona registrado por</option>
+        <option *ngFor="let opt of usuarios" [value]="opt.id">{{ opt.username }}</option>
+      </select>
+      <small class="ayuda">Usuario que registra esta venta</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Fecha de venta</th><th>Total (S/)</th><th>Estado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ventas">
+        <td>{{ item.fechaVenta }}</td><td>{{ item.total }}</td><td>{{ item.estado }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

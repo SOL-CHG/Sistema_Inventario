@@ -1,0 +1,44 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Roles</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" [(ngModel)]="rolActual.nombre" name="nombre" required>
+      <small class="ayuda">Ej. ADMINISTRADOR, VENDEDOR</small>
+    </div>
+    <div class="campo">
+      <label for="descripcion">Descripción</label>
+      <input id="descripcion" type="text" [(ngModel)]="rolActual.descripcion" name="descripcion">
+      <small class="ayuda">Qué puede hacer este rol</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th><th>Descripción</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of rols">
+        <td>{{ item.nombre }}</td><td>{{ item.descripcion }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

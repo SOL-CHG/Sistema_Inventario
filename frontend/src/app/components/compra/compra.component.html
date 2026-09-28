@@ -1,0 +1,65 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Compras</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="fechaCompra">Fecha de compra</label>
+      <input id="fechaCompra" type="date" [(ngModel)]="compraActual.fechaCompra" name="fechaCompra" required>
+      <small class="ayuda">Cuándo se realizó la compra</small>
+    </div>
+    <div class="campo">
+      <label for="total">Total (S/)</label>
+      <input id="total" type="number" [(ngModel)]="compraActual.total" name="total" required>
+      <small class="ayuda">Monto total pagado al proveedor</small>
+    </div>
+    <div class="campo">
+      <label for="estado">Estado</label>
+      <input id="estado" type="text" [(ngModel)]="compraActual.estado" name="estado">
+      <small class="ayuda">Ej. PENDIENTE, PAGADA</small>
+    </div>
+    <div class="campo">
+      <label for="proveedor">Proveedor</label>
+      <select id="proveedor" [(ngModel)]="compraActual.proveedor.id" name="proveedor">
+        <option [value]="0" disabled>Selecciona proveedor</option>
+        <option *ngFor="let opt of proveedores" [value]="opt.id">{{ opt.razonSocial }}</option>
+      </select>
+      <small class="ayuda">A quién le compraste</small>
+    </div>
+    <div class="campo">
+      <label for="usuario">Registrado por</label>
+      <select id="usuario" [(ngModel)]="compraActual.usuario.id" name="usuario">
+        <option [value]="0" disabled>Selecciona registrado por</option>
+        <option *ngFor="let opt of usuarios" [value]="opt.id">{{ opt.username }}</option>
+      </select>
+      <small class="ayuda">Usuario que registra esta compra</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Fecha de compra</th><th>Total (S/)</th><th>Estado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of compras">
+        <td>{{ item.fechaCompra }}</td><td>{{ item.total }}</td><td>{{ item.estado }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

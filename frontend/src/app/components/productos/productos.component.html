@@ -1,0 +1,85 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Productos</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="codigo">Código</label>
+      <input id="codigo" type="text" [(ngModel)]="productoActual.codigo" name="codigo" required>
+      <small class="ayuda">Código único del producto, ej. P001</small>
+    </div>
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" [(ngModel)]="productoActual.nombre" name="nombre" required>
+      <small class="ayuda">Nombre comercial del producto</small>
+    </div>
+    <div class="campo">
+      <label for="descripcion">Descripción</label>
+      <input id="descripcion" type="text" [(ngModel)]="productoActual.descripcion" name="descripcion">
+      <small class="ayuda">Detalle opcional (marca, presentación, etc.)</small>
+    </div>
+    <div class="campo">
+      <label for="precioCompra">Precio compra (S/)</label>
+      <input id="precioCompra" type="number" [(ngModel)]="productoActual.precioCompra" name="precioCompra" required>
+      <small class="ayuda">Lo que pagas al proveedor por unidad</small>
+    </div>
+    <div class="campo">
+      <label for="precioVenta">Precio venta (S/)</label>
+      <input id="precioVenta" type="number" [(ngModel)]="productoActual.precioVenta" name="precioVenta" required>
+      <small class="ayuda">Lo que cobras al cliente por unidad</small>
+    </div>
+    <div class="campo">
+      <label for="stockActual">Stock actual</label>
+      <input id="stockActual" type="number" [(ngModel)]="productoActual.stockActual" name="stockActual" required>
+      <small class="ayuda">Unidades disponibles ahora mismo</small>
+    </div>
+    <div class="campo">
+      <label for="stockMinimo">Stock mínimo</label>
+      <input id="stockMinimo" type="number" [(ngModel)]="productoActual.stockMinimo" name="stockMinimo" required>
+      <small class="ayuda">Cuando el stock llegue a este número, hay que reponer</small>
+    </div>
+    <div class="campo">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" [(ngModel)]="productoActual.categoria.id" name="categoria">
+        <option [value]="0" disabled>Selecciona categoría</option>
+        <option *ngFor="let opt of categorias" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">A qué categoría pertenece este producto</small>
+    </div>
+    <div class="campo">
+      <label for="proveedor">Proveedor</label>
+      <select id="proveedor" [(ngModel)]="productoActual.proveedor.id" name="proveedor">
+        <option [value]="0" disabled>Selecciona proveedor</option>
+        <option *ngFor="let opt of proveedores" [value]="opt.id">{{ opt.razonSocial }}</option>
+      </select>
+      <small class="ayuda">Quién te vende este producto</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Código</th><th>Nombre</th><th>Descripción</th><th>Precio compra (S/)</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of productos">
+        <td>{{ item.codigo }}</td><td>{{ item.nombre }}</td><td>{{ item.descripcion }}</td><td>{{ item.precioCompra }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

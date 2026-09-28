@@ -1,0 +1,59 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Proveedores</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="ruc">RUC</label>
+      <input id="ruc" type="text" [(ngModel)]="proveedorActual.ruc" name="ruc" required>
+      <small class="ayuda">RUC de 11 dígitos de la empresa</small>
+    </div>
+    <div class="campo">
+      <label for="razonSocial">Razón social</label>
+      <input id="razonSocial" type="text" [(ngModel)]="proveedorActual.razonSocial" name="razonSocial" required>
+      <small class="ayuda">Nombre legal de la empresa proveedora</small>
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono</label>
+      <input id="telefono" type="text" [(ngModel)]="proveedorActual.telefono" name="telefono">
+      <small class="ayuda">Número de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="proveedorActual.email" name="email">
+      <small class="ayuda">Correo de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" type="text" [(ngModel)]="proveedorActual.direccion" name="direccion">
+      <small class="ayuda">Dirección fiscal o de contacto</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>RUC</th><th>Razón social</th><th>Teléfono</th><th>Email</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of proveedors">
+        <td>{{ item.ruc }}</td><td>{{ item.razonSocial }}</td><td>{{ item.telefono }}</td><td>{{ item.email }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,62 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Usuarios</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="nombreCompleto">Nombre completo</label>
+      <input id="nombreCompleto" type="text" [(ngModel)]="usuarioActual.nombreCompleto" name="nombreCompleto" required>
+      <small class="ayuda">Nombre y apellido del usuario del sistema</small>
+    </div>
+    <div class="campo">
+      <label for="username">Usuario</label>
+      <input id="username" type="text" [(ngModel)]="usuarioActual.username" name="username" required>
+      <small class="ayuda">Con el que inicia sesión (sin espacios)</small>
+    </div>
+    <div class="campo">
+      <label for="password">Contraseña</label>
+      <input id="password" type="text" [(ngModel)]="usuarioActual.password" name="password" required>
+      <small class="ayuda">Se guarda tal cual (alcance académico, sin encriptar)</small>
+    </div>
+    <div class="campo">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="usuarioActual.email" name="email">
+      <small class="ayuda">Correo de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="rol">Rol</label>
+      <select id="rol" [(ngModel)]="usuarioActual.rol.id" name="rol">
+        <option [value]="0" disabled>Selecciona rol</option>
+        <option *ngFor="let opt of roles" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">Determina sus permisos en el sistema</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Nombre completo</th><th>Usuario</th><th>Contraseña</th><th>Email</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of usuarios">
+        <td>{{ item.nombreCompleto }}</td><td>{{ item.username }}</td><td>{{ item.password }}</td><td>{{ item.email }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

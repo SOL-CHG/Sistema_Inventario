@@ -1,0 +1,59 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Clientes</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="numeroDocumento">N° Documento</label>
+      <input id="numeroDocumento" type="text" [(ngModel)]="clienteActual.numeroDocumento" name="numeroDocumento" required>
+      <small class="ayuda">DNI (8 dígitos) o RUC (11 dígitos) del cliente</small>
+    </div>
+    <div class="campo">
+      <label for="nombres">Nombres</label>
+      <input id="nombres" type="text" [(ngModel)]="clienteActual.nombres" name="nombres" required>
+      <small class="ayuda">Nombre completo del cliente</small>
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono</label>
+      <input id="telefono" type="text" [(ngModel)]="clienteActual.telefono" name="telefono">
+      <small class="ayuda">Número de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="clienteActual.email" name="email">
+      <small class="ayuda">Correo de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" type="text" [(ngModel)]="clienteActual.direccion" name="direccion">
+      <small class="ayuda">Dirección del cliente</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>N° Documento</th><th>Nombres</th><th>Teléfono</th><th>Email</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of clientes">
+        <td>{{ item.numeroDocumento }}</td><td>{{ item.nombres }}</td><td>{{ item.telefono }}</td><td>{{ item.email }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

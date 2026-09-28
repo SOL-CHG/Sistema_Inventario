@@ -1,0 +1,78 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Movimientos de Inventario</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="tipoMovimiento">Tipo</label>
+      <input id="tipoMovimiento" type="text" [(ngModel)]="movimientoActual.tipoMovimiento" name="tipoMovimiento" required>
+      <small class="ayuda">Escribe ENTRADA o SALIDA</small>
+    </div>
+    <div class="campo">
+      <label for="cantidad">Cantidad</label>
+      <input id="cantidad" type="number" [(ngModel)]="movimientoActual.cantidad" name="cantidad" required>
+      <small class="ayuda">Unidades que entran o salen</small>
+    </div>
+    <div class="campo">
+      <label for="fechaMovimiento">Fecha</label>
+      <input id="fechaMovimiento" type="date" [(ngModel)]="movimientoActual.fechaMovimiento" name="fechaMovimiento">
+      <small class="ayuda">Cuándo ocurrió el movimiento</small>
+    </div>
+    <div class="campo">
+      <label for="motivo">Motivo</label>
+      <input id="motivo" type="text" [(ngModel)]="movimientoActual.motivo" name="motivo">
+      <small class="ayuda">Ej. Compra a proveedor, Venta, Ajuste de inventario</small>
+    </div>
+    <div class="campo">
+      <label for="producto">Producto</label>
+      <select id="producto" [(ngModel)]="movimientoActual.producto.id" name="producto">
+        <option [value]="0" disabled>Selecciona producto</option>
+        <option *ngFor="let opt of productos" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">Qué producto se mueve</small>
+    </div>
+    <div class="campo">
+      <label for="almacen">Almacén</label>
+      <select id="almacen" [(ngModel)]="movimientoActual.almacen.id" name="almacen">
+        <option [value]="0" disabled>Selecciona almacén</option>
+        <option *ngFor="let opt of almacenes" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">En qué almacén ocurre el movimiento</small>
+    </div>
+    <div class="campo">
+      <label for="usuario">Registrado por</label>
+      <select id="usuario" [(ngModel)]="movimientoActual.usuario.id" name="usuario">
+        <option [value]="0" disabled>Selecciona registrado por</option>
+        <option *ngFor="let opt of usuarios" [value]="opt.id">{{ opt.username }}</option>
+      </select>
+      <small class="ayuda">Usuario que registra el movimiento</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Tipo</th><th>Cantidad</th><th>Fecha</th><th>Motivo</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of movimientos">
+        <td>{{ item.tipoMovimiento }}</td><td>{{ item.cantidad }}</td><td>{{ item.fechaMovimiento }}</td><td>{{ item.motivo }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

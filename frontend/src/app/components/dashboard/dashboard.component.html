@@ -1,0 +1,33 @@
+<header class="cabecera">
+  <h1>Sistema de Inventario - Tienda</h1>
+  <div class="usuario-info" *ngIf="usuario">
+    <span>{{ usuario.nombreCompleto }} <small>({{ usuario.rolNombre }})</small></span>
+    <button (click)="cerrarSesion()">Cerrar sesión</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="menu-lateral">
+    <button
+      *ngFor="let item of menu"
+      [class.activo]="seccionActiva === item.id"
+      (click)="irA(item.id)">
+      {{ item.label }}
+    </button>
+  </nav>
+
+  <main class="contenido">
+    <app-productos *ngIf="seccionActiva === 'productos'"></app-productos>
+    <app-categoria *ngIf="seccionActiva === 'categorias'"></app-categoria>
+    <app-proveedor *ngIf="seccionActiva === 'proveedores'"></app-proveedor>
+    <app-almacen *ngIf="seccionActiva === 'almacenes'"></app-almacen>
+    <app-cliente *ngIf="seccionActiva === 'clientes'"></app-cliente>
+    <app-compra *ngIf="seccionActiva === 'compras'"></app-compra>
+    <app-detalle-compra *ngIf="seccionActiva === 'detalle-compras'"></app-detalle-compra>
+    <app-venta *ngIf="seccionActiva === 'ventas'"></app-venta>
+    <app-detalle-venta *ngIf="seccionActiva === 'detalle-ventas'"></app-detalle-venta>
+    <app-movimiento *ngIf="seccionActiva === 'movimientos'"></app-movimiento>
+    <app-usuario *ngIf="seccionActiva === 'usuarios'"></app-usuario>
+    <app-rol *ngIf="seccionActiva === 'roles'"></app-rol>
+  </main>
+</div>
